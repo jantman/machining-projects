@@ -1,7 +1,5 @@
 # github.com/jantman/machining-projects tailstock-die-holders/
 
-[![Project Status: Unsupported – The project has reached a stable, usable state but the author(s) have ceased all work on it. A new maintainer may be desired.](https://www.repostatus.org/badges/latest/unsupported.svg)](https://www.repostatus.org/#unsupported)
-
 Plans for some lathe tailstock die holders, made on the lathe. These are roughly based on Quinn Dunki's ([blondihacks.com](https://blondihacks.com/)) die holders, based on her drawings and [YouTube video](https://www.youtube.com/watch?v=U9v4FHaAOdg).
 
 They're designed to hold both [GearWrench hexagonal dies](https://smile.amazon.com/gp/product/B001GMVA64/) as well as standard round dies; specifically, dies that are:
