@@ -1,5 +1,5 @@
-// Large hex fitting in a hex holder 1.425" across flats and 0.520" deep
-// Small hex fitting in a hex holder 1.011" across flats and 0.355" deep
+// Large hex fitting in a hex holder 1.425" across flats (1.645 across points) and 0.520" deep
+// Small hex fitting in a hex holder 1.011" across flats (1.167 across points) and 0.355" deep
 
 $fn = 720;
 
