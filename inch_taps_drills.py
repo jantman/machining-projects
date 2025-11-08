@@ -775,6 +775,14 @@ for row in range(1, 4):
     for col in range(1, 13):
         ws.cell(row=row, column=col).border = thin_border
 
+# Apply borders to all data cells (including merged cells in the last row)
+last_data_row = current_row - 1
+for row in range(4, last_data_row + 1):
+    for col in range(1, 13):
+        cell = ws.cell(row=row, column=col)
+        # Apply border even to merged cells to ensure bottom borders appear
+        cell.border = thin_border
+
 # Adjust column widths
 ws.column_dimensions['A'].width = 10
 ws.column_dimensions['B'].width = 10
