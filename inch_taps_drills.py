@@ -1054,10 +1054,13 @@ def create_sheet(ws, config):
         for col in ['M', 'N', 'O', 'P']:
             ws.column_dimensions[col].width = 11 * multiplier
         for col in ['Q', 'R']:
-            ws.column_dimensions[col].width = 11 * multiplier        # Set row heights for better readability
-        ws.row_dimensions[1].height = 30
-        ws.row_dimensions[2].height = 40
-        ws.row_dimensions[3].height = 20
+            ws.column_dimensions[col].width = 11 * multiplier
+    
+        # Set row heights for better readability
+        row_multiplier = config.get('row_height_multiplier', 1.0)
+        ws.row_dimensions[1].height = 30 * row_multiplier
+        ws.row_dimensions[2].height = 40 * row_multiplier
+        ws.row_dimensions[3].height = 20 * row_multiplier
     
         # Freeze the first 3 rows (header rows)
         ws.freeze_panes = 'A4'
@@ -1109,7 +1112,8 @@ configs = [
         'fit_height': 1,
         'fit_width': 1,
         'use_fit_to_page': True,
-        'column_width_multiplier': 1.0
+        'column_width_multiplier': 1.0,
+        'row_height_multiplier': 1.0
     },
     {
         'name': 'Tabloid Landscape 1pg',
@@ -1118,7 +1122,8 @@ configs = [
         'fit_height': 1,
         'fit_width': 1,
         'use_fit_to_page': True,
-        'column_width_multiplier': 1.0
+        'column_width_multiplier': 1.0,
+        'row_height_multiplier': 1.0
     },
     {
         'name': 'Tabloid Landscape 2x2',
@@ -1127,7 +1132,8 @@ configs = [
         'fit_height': 2,
         'fit_width': 2,
         'use_fit_to_page': True,
-        'column_width_multiplier': 1.0
+        'column_width_multiplier': 1.0,
+        'row_height_multiplier': 1.0
     },
     {
         'name': '24x36 Landscape 1pg',
@@ -1137,6 +1143,7 @@ configs = [
         'fit_width': 0,
         'use_fit_to_page': False,
         'column_width_multiplier': 2.5,  # Make columns wider for large format
+        'row_height_multiplier': 2.5,  # Make rows taller for large format
         'paper_width': 36,  # Width in inches (wider dimension)
         'paper_height': 24  # Height in inches (shorter dimension)
     },
@@ -1148,6 +1155,7 @@ configs = [
         'fit_width': 0,
         'use_fit_to_page': False,
         'column_width_multiplier': 3.5,  # Make columns even wider for very large format
+        'row_height_multiplier': 3.5,  # Make rows taller for very large format
         'paper_width': 48,  # Width in inches (wider dimension)
         'paper_height': 36  # Height in inches (shorter dimension)
     }
