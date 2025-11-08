@@ -794,13 +794,31 @@ ws['K2'] = "Free Fit"
 ws['K2'].font = bold_font
 ws['K2'].alignment = center_align_wrap
 
+# SHCS section
+ws.merge_cells('M1:P1')  # SHCS header
+ws['M1'] = "SHCS"
+ws['M1'].font = bold_font
+ws['M1'].alignment = center_align_wrap
+
+ws.merge_cells('M2:M3')  # Hex subsection
+ws['M2'] = "Hex"
+ws['M2'].font = bold_font
+ws['M2'].alignment = center_align_wrap
+
+ws.merge_cells('N2:P2')  # Counterbore subsection
+ws['N2'] = "Counterbore"
+ws['N2'].font = bold_font
+ws['N2'].alignment = center_align_wrap
+
 # Row 3: Column detail headers
 headers_row3 = [
     "", "", "", "",  # A-D (already merged from rows 1-2)
     "Drill Size", "Dec. Eq.",  # E-F (75% Thread)
     "Drill Size", "Dec. Eq.",  # G-H (50% Thread)
     "Drill Size", "Dec. Eq.",  # I-J (Close Fit)
-    "Drill Size", "Dec. Eq."   # K-L (Free Fit)
+    "Drill Size", "Dec. Eq.",  # K-L (Free Fit)
+    "",  # M (Hex - merged from row 2)
+    "Drill", "Dia.", "Depth"  # N-P (Counterbore)
 ]
 
 for col, header in enumerate(headers_row3, start=1):
@@ -877,9 +895,24 @@ for screw_size, screw_data in sorted_screws:
                 ws.merge_cells(f'J{first_row_of_screw}:J{first_row_of_screw + num_threads - 1}')
                 ws.merge_cells(f'K{first_row_of_screw}:K{first_row_of_screw + num_threads - 1}')
                 ws.merge_cells(f'L{first_row_of_screw}:L{first_row_of_screw + num_threads - 1}')
+            
+            # Write SHCS data (only on first thread row, then merge)
+            if 'shcs' in screw_data:
+                shcs = screw_data['shcs']
+                ws.cell(row=current_row, column=13).value = format_drill_size(shcs['hex'])
+                ws.cell(row=current_row, column=14).value = format_drill_size(shcs['counterbore_drill'])
+                ws.cell(row=current_row, column=15).value = format_decimal(shcs['counterbore_dia'])
+                ws.cell(row=current_row, column=16).value = format_decimal(shcs['counterbore_depth'])
+                
+                # Merge SHCS columns if multiple threads
+                if num_threads > 1:
+                    ws.merge_cells(f'M{first_row_of_screw}:M{first_row_of_screw + num_threads - 1}')
+                    ws.merge_cells(f'N{first_row_of_screw}:N{first_row_of_screw + num_threads - 1}')
+                    ws.merge_cells(f'O{first_row_of_screw}:O{first_row_of_screw + num_threads - 1}')
+                    ws.merge_cells(f'P{first_row_of_screw}:P{first_row_of_screw + num_threads - 1}')
         
         # Apply formatting to all cells in this row
-        for col in range(1, 13):
+        for col in range(1, 17):
             cell = ws.cell(row=current_row, column=col)
             if not isinstance(cell, MergedCell):
                 cell.alignment = center_align
@@ -892,13 +925,13 @@ for screw_size, screw_data in sorted_screws:
 
 # Apply borders to all header cells
 for row in range(1, 4):
-    for col in range(1, 13):
+    for col in range(1, 17):
         ws.cell(row=row, column=col).border = thin_border
 
 # Apply borders to all data cells (including merged cells in the last row)
 last_data_row = current_row - 1
 for row in range(4, last_data_row + 1):
-    for col in range(1, 13):
+    for col in range(1, 17):
         cell = ws.cell(row=row, column=col)
         # Apply border even to merged cells to ensure bottom borders appear
         cell.border = thin_border
@@ -909,6 +942,8 @@ ws.column_dimensions['B'].width = 10
 ws.column_dimensions['C'].width = 10
 ws.column_dimensions['D'].width = 10
 for col in ['E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']:
+    ws.column_dimensions[col].width = 11
+for col in ['M', 'N', 'O', 'P']:
     ws.column_dimensions[col].width = 11
 
 # Set row heights for better readability
