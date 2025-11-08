@@ -201,7 +201,13 @@ THREAD_DATA = {
                 "tap_50": 55,
             }
         },
-        "clearance": {"close_fit": 52, "free_fit": 50}
+        "clearance": {"close_fit": 52, "free_fit": 50},
+        "shcs": {
+            "hex": "0.050",
+            "counterbore_drill": Fraction(1, 8),
+            "counterbore_dia": 0.125,
+            "counterbore_depth": 0.074
+        }
     },
     "#1": {
         "major_diameter": 0.0730,
@@ -217,7 +223,13 @@ THREAD_DATA = {
                 "tap_50": 52,
             }
         },
-        "clearance": {"close_fit": 48, "free_fit": 46}
+        "clearance": {"close_fit": 48, "free_fit": 46},
+        "shcs": {
+            "hex": Fraction(1, 16),
+            "counterbore_drill": Fraction(5, 32),
+            "counterbore_dia": 0.15625,
+            "counterbore_depth": 0.087
+        }
     },
     "#2": {
         "major_diameter": 0.0860,
@@ -233,7 +245,13 @@ THREAD_DATA = {
                 "tap_50": 48,
             }
         },
-        "clearance": {"close_fit": 43, "free_fit": 41}
+        "clearance": {"close_fit": 43, "free_fit": 41},
+        "shcs": {
+            "hex": Fraction(5, 64),
+            "counterbore_drill": Fraction(3, 16),
+            "counterbore_dia": 0.1875,
+            "counterbore_depth": 0.102
+        }
     },
     "#3": {
         "major_diameter": 0.0990,
@@ -249,7 +267,13 @@ THREAD_DATA = {
                 "tap_50": 43,
             }
         },
-        "clearance": {"close_fit": 37, "free_fit": 35}
+        "clearance": {"close_fit": 37, "free_fit": 35},
+        "shcs": {
+            "hex": Fraction(5, 64),
+            "counterbore_drill": Fraction(7, 32),
+            "counterbore_dia": 0.21875,
+            "counterbore_depth": 0.115
+        }
     },
     "#4": {
         "major_diameter": 0.1120,
@@ -265,7 +289,13 @@ THREAD_DATA = {
                 "tap_50": 40,
             }
         },
-        "clearance": {"close_fit": 32, "free_fit": 30}
+        "clearance": {"close_fit": 32, "free_fit": 30},
+        "shcs": {
+            "hex": Fraction(3, 32),
+            "counterbore_drill": Fraction(7, 32),
+            "counterbore_dia": 0.21875,
+            "counterbore_depth": 0.130
+        }
     },
     "#5": {
         "major_diameter": 0.1250,
@@ -281,7 +311,13 @@ THREAD_DATA = {
                 "tap_50": 35,
             }
         },
-        "clearance": {"close_fit": 30, "free_fit": 29}
+        "clearance": {"close_fit": 30, "free_fit": 29},
+        "shcs": {
+            "hex": Fraction(3, 32),
+            "counterbore_drill": Fraction(1, 4),
+            "counterbore_dia": 0.250,
+            "counterbore_depth": 0.145
+        }
     },
     "#6": {
         "major_diameter": 0.1380,
@@ -297,7 +333,13 @@ THREAD_DATA = {
                 "tap_50": 31,
             }
         },
-        "clearance": {"close_fit": 27, "free_fit": 25}
+        "clearance": {"close_fit": 27, "free_fit": 25},
+        "shcs": {
+            "hex": Fraction(7, 64),
+            "counterbore_drill": Fraction(9, 32),
+            "counterbore_dia": 0.28125,
+            "counterbore_depth": 0.158
+        }
     },
     "#8": {
         "major_diameter": 0.1640,
@@ -313,7 +355,13 @@ THREAD_DATA = {
                 "tap_50": 26,
             }
         },
-        "clearance": {"close_fit": 18, "free_fit": 16}
+        "clearance": {"close_fit": 18, "free_fit": 16},
+        "shcs": {
+            "hex": Fraction(9, 64),
+            "counterbore_drill": Fraction(5, 16),
+            "counterbore_dia": 0.3125,
+            "counterbore_depth": 0.188
+        }
     },
     "#10": {
         "major_diameter": 0.1900,
@@ -329,7 +377,13 @@ THREAD_DATA = {
                 "tap_50": 18,
             }
         },
-        "clearance": {"close_fit": 9, "free_fit": 7}
+        "clearance": {"close_fit": 9, "free_fit": 7},
+        "shcs": {
+            "hex": Fraction(5, 32),
+            "counterbore_drill": Fraction(3, 8),
+            "counterbore_dia": 0.375,
+            "counterbore_depth": 0.218
+        }
     },
     "#12": {
         "major_diameter": 0.2160,
@@ -350,7 +404,13 @@ THREAD_DATA = {
                 "tap_50": 9,
             }
         },
-        "clearance": {"close_fit": 2, "free_fit": 1}
+        "clearance": {"close_fit": 2, "free_fit": 1},
+        "shcs": {
+            "hex": Fraction(5, 32),
+            "counterbore_drill": Fraction(3, 8),
+            "counterbore_dia": 0.375,
+            "counterbore_depth": 0.218
+        }
     },
     "1/4": {
         "major_diameter": 0.2500,
@@ -371,7 +431,13 @@ THREAD_DATA = {
                 "tap_50": 1,
             }
         },
-        "clearance": {"close_fit": 'F', "free_fit": 'H'}
+        "clearance": {"close_fit": 'F', "free_fit": 'H'},
+        "shcs": {
+            "hex": Fraction(3, 16),
+            "counterbore_drill": Fraction(7, 16),
+            "counterbore_dia": 0.4375,
+            "counterbore_depth": 0.278
+        }
     },
     "5/16": {
         "major_diameter": 0.3125,
@@ -392,7 +458,13 @@ THREAD_DATA = {
                 "tap_50": 'L',
             }
         },
-        "clearance": {"close_fit": 'P', "free_fit": 'Q'}
+        "clearance": {"close_fit": 'P', "free_fit": 'Q'},
+        "shcs": {
+            "hex": Fraction(1, 4),
+            "counterbore_drill": Fraction(17, 32),
+            "counterbore_dia": 0.53125,
+            "counterbore_depth": 0.346
+        }
     },
     "3/8": {
         "major_diameter": 0.3750,
@@ -413,7 +485,13 @@ THREAD_DATA = {
                 "tap_50": 'T',
             }
         },
-        "clearance": {"close_fit": 'W', "free_fit": 'X'}
+        "clearance": {"close_fit": 'W', "free_fit": 'X'},
+        "shcs": {
+            "hex": Fraction(5, 16),
+            "counterbore_drill": Fraction(5, 8),
+            "counterbore_dia": 0.625,
+            "counterbore_depth": 0.415
+        }
     },
     "7/16": {
         "major_diameter": 0.4375,
@@ -434,7 +512,13 @@ THREAD_DATA = {
                 "tap_50": 'Z',
             }
         },
-        "clearance": {"close_fit": Fraction(29, 64), "free_fit": Fraction(15, 32)}
+        "clearance": {"close_fit": Fraction(29, 64), "free_fit": Fraction(15, 32)},
+        "shcs": {
+            "hex": Fraction(3, 8),
+            "counterbore_drill": Fraction(23, 32),
+            "counterbore_dia": 0.71875,
+            "counterbore_depth": 0.483
+        }
     },
     "1/2": {
         "major_diameter": 0.5000,
@@ -455,7 +539,13 @@ THREAD_DATA = {
                 "tap_50": Fraction(15, 32),
             }
         },
-        "clearance": {"close_fit": Fraction(33, 64), "free_fit": Fraction(17, 32)}
+        "clearance": {"close_fit": Fraction(33, 64), "free_fit": Fraction(17, 32)},
+        "shcs": {
+            "hex": Fraction(3, 8),
+            "counterbore_drill": Fraction(13, 16),
+            "counterbore_dia": 0.8125,
+            "counterbore_depth": 0.552
+        }
     },
     "9/16": {
         "major_diameter": 0.5625,
@@ -476,7 +566,13 @@ THREAD_DATA = {
                 "tap_50": Fraction(17, 32),
             }
         },
-        "clearance": {"close_fit": Fraction(37, 64), "free_fit": Fraction(19, 32)}
+        "clearance": {"close_fit": Fraction(37, 64), "free_fit": Fraction(19, 32)},
+        "shcs": {
+            "hex": Fraction(1, 2),
+            "counterbore_drill": Fraction(29, 32),
+            "counterbore_dia": 0.9062,
+            "counterbore_depth": 0.594
+        }
     },
     "5/8": {
         "major_diameter": 0.6250,
@@ -497,7 +593,13 @@ THREAD_DATA = {
                 "tap_50": Fraction(19, 32),
             }
         },
-        "clearance": {"close_fit": Fraction(41, 64), "free_fit": Fraction(21, 32)}
+        "clearance": {"close_fit": Fraction(41, 64), "free_fit": Fraction(21, 32)},
+        "shcs": {
+            "hex": Fraction(1, 2),
+            "counterbore_drill": Fraction(1, 1),
+            "counterbore_dia": 1.0,
+            "counterbore_depth": 0.689
+        }
     },
     "11/16": {
         "major_diameter": 0.6875,
@@ -529,7 +631,13 @@ THREAD_DATA = {
                 "tap_50": Fraction(23, 32),
             }
         },
-        "clearance": {"close_fit": Fraction(49, 64), "free_fit": Fraction(25, 32)}
+        "clearance": {"close_fit": Fraction(49, 64), "free_fit": Fraction(25, 32)},
+        "shcs": {
+            "hex": Fraction(5, 8),
+            "counterbore_drill": Fraction(19, 16),
+            "counterbore_dia": 1.1875,
+            "counterbore_depth": 0.828
+        }
     },
     "13/16": {
         "major_diameter": 0.8125,
@@ -561,7 +669,13 @@ THREAD_DATA = {
                 "tap_50": Fraction(27, 32),
             }
         },
-        "clearance": {"close_fit": Fraction(57, 64), "free_fit": Fraction(29, 32)}
+        "clearance": {"close_fit": Fraction(57, 64), "free_fit": Fraction(29, 32)},
+        "shcs": {
+            "hex": Fraction(3, 4),
+            "counterbore_drill": Fraction(11, 8),
+            "counterbore_dia": 1.375,
+            "counterbore_depth": 0.963
+        }
     },
     "15/16": {
         "major_diameter": 0.9375,
@@ -593,7 +707,13 @@ THREAD_DATA = {
                 "tap_50": Fraction(31, 32),
             }
         },
-        "clearance": {"close_fit": Fraction(65, 64), "free_fit": Fraction(33, 32)}
+        "clearance": {"close_fit": Fraction(65, 64), "free_fit": Fraction(33, 32)},
+        "shcs": {
+            "hex": Fraction(3, 4),
+            "counterbore_drill": Fraction(13, 8),
+            "counterbore_dia": 1.625,
+            "counterbore_depth": 1.100
+        }
     },
 }
 
