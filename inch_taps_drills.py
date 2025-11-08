@@ -797,12 +797,7 @@ THREAD_DATA = {
 # SPREADSHEET GENERATION
 # ============================================================================
 
-# Create workbook
-wb = Workbook()
-ws = wb.active
-ws.title = "Tap & Drill Sizes"
-
-# Define styles
+# Define styles (shared across all sheets)
 header_fill = PatternFill(start_color="D3D3D3", end_color="D3D3D3", fill_type="solid")
 subheader_fill = PatternFill(start_color="E8E8E8", end_color="E8E8E8", fill_type="solid")
 alt_row_fill = PatternFill(start_color="E2E2E2", end_color="E2E2E2", fill_type="solid")
@@ -816,272 +811,328 @@ thin_border = Border(
     bottom=Side(style='thin')
 )
 
-# Create header rows
-# Row 1: Main headers with column spans
-ws.merge_cells('A1:A3')  # Screw Size
-ws['A1'] = "Screw Size"
-ws['A1'].font = bold_font
-ws['A1'].alignment = center_align_wrap
+def create_sheet(ws, config):
+    """
+    Create a worksheet with tap and drill data.
+    
+    Args:
+        ws: Worksheet object to populate
+        config: Dictionary with page configuration
+    """
+    # Create header rows
+    # Row 1: Main headers with column spans
+    ws.merge_cells('A1:A3')  # Screw Size
+    ws['A1'] = "Screw Size"
+    ws['A1'].font = bold_font
+    ws['A1'].alignment = center_align_wrap
 
-ws.merge_cells('B1:B3')  # Major Diameter
-ws['B1'] = "Major Diameter"
-ws['B1'].font = bold_font
-ws['B1'].alignment = center_align_wrap
+    ws.merge_cells('B1:B3')  # Major Diameter
+    ws['B1'] = "Major Diameter"
+    ws['B1'].font = bold_font
+    ws['B1'].alignment = center_align_wrap
 
-ws.merge_cells('C1:C3')  # Threads Per Inch
-ws['C1'] = "TPI"
-ws['C1'].font = bold_font
-ws['C1'].alignment = center_align_wrap
+    ws.merge_cells('C1:C3')  # Threads Per Inch
+    ws['C1'] = "TPI"
+    ws['C1'].font = bold_font
+    ws['C1'].alignment = center_align_wrap
+    
+    ws.merge_cells('D1:D3')  # Minor Diameter
+    ws['D1'] = "Minor Diameter"
+    ws['D1'].font = bold_font
+    ws['D1'].alignment = center_align_wrap
+    
+    # Tap Drill section
+    ws.merge_cells('E1:H1')  # Tap Drill header
+    ws['E1'] = "Tap Drill"
+    ws['E1'].font = bold_font
+    ws['E1'].alignment = center_align_wrap
+    
+    ws.merge_cells('E2:F2')  # 75% Thread subsection
+    ws['E2'] = "75% Thread for Aluminum, Brass, Plastics"
+    ws['E2'].font = bold_font
+    ws['E2'].alignment = center_align_wrap
+    
+    ws.merge_cells('G2:H2')  # 50% Thread subsection
+    ws['G2'] = "50% Thread for Stainless, Cast Iron & Iron"
+    ws['G2'].font = bold_font
+    ws['G2'].alignment = center_align_wrap
+    
+    # Clearance Drill section
+    ws.merge_cells('I1:L1')  # Clearance Drill header
+    ws['I1'] = "Clearance Drill"
+    ws['I1'].font = bold_font
+    ws['I1'].alignment = center_align_wrap
+    
+    ws.merge_cells('I2:J2')  # Close Fit subsection
+    ws['I2'] = "Close Fit"
+    ws['I2'].font = bold_font
+    ws['I2'].alignment = center_align_wrap
+    
+    ws.merge_cells('K2:L2')  # Free Fit subsection
+    ws['K2'] = "Free Fit"
+    ws['K2'].font = bold_font
+    ws['K2'].alignment = center_align_wrap
+    
+    # SHCS section
+    ws.merge_cells('M1:P1')  # SHCS header
+    ws['M1'] = "Socket Head Cap Screws"
+    ws['M1'].font = bold_font
+    ws['M1'].alignment = center_align_wrap
+    
+    ws.merge_cells('M2:M3')  # Hex subsection
+    ws['M2'] = "Hex"
+    ws['M2'].font = bold_font
+    ws['M2'].alignment = center_align_wrap
+    
+    ws.merge_cells('N2:P2')  # Counterbore subsection
+    ws['N2'] = "Counterbore"
+    ws['N2'].font = bold_font
+    ws['N2'].alignment = center_align_wrap
+    
+    # FHCS section
+    ws.merge_cells('Q1:R1')  # FHCS header
+    ws['Q1'] = "Flat Head Cap Screws"
+    ws['Q1'].font = bold_font
+    ws['Q1'].alignment = center_align_wrap
+    
+    ws.merge_cells('Q2:Q3')  # Hex subsection
+    ws['Q2'] = "Hex"
+    ws['Q2'].font = bold_font
+    ws['Q2'].alignment = center_align_wrap
+    
+    ws.merge_cells('R2:R3')  # Countersink Depth subsection
+    ws['R2'] = "Countersink Depth"
+    ws['R2'].font = bold_font
+    ws['R2'].alignment = center_align_wrap
+    
+    # Row 3: Column detail headers
+    headers_row3 = [
+        "", "", "", "",  # A-D (already merged from rows 1-3)
+        "Drill Size", "Dec. Eq.",  # E-F (75% Thread)
+        "Drill Size", "Dec. Eq.",  # G-H (50% Thread)
+        "Drill Size", "Dec. Eq.",  # I-J (Close Fit)
+        "Drill Size", "Dec. Eq.",  # K-L (Free Fit)
+        "",  # M (Hex - merged from row 2-3)
+        "Drill Size", "Dec. Eq.", "Depth",  # N-P (Counterbore)
+        "", ""  # Q-R (FHCS Hex and Countersink Depth - merged from row 2-3)
+    ]
+    
+    for col, header in enumerate(headers_row3, start=1):
+        if header:  # Skip empty cells (A-D)
+            cell = ws.cell(row=3, column=col)
+            cell.value = header
+            cell.font = bold_font
+            cell.alignment = center_align_wrap
+    
+    # Generate data rows from structured data
+    current_row = 4
+    alternate_color = False  # Track alternating colors for screw sizes
+    
+    # Sort screw sizes by major diameter
+    sorted_screws = sorted(THREAD_DATA.items(), key=lambda x: x[1]['major_diameter'])
+    
+    for screw_size, screw_data in sorted_screws:
+        major_diam = screw_data["major_diameter"]
+        threads = screw_data["threads"]
+        clearance = screw_data["clearance"]
+        
+        # Toggle alternating color for each new screw size
+        alternate_color = not alternate_color
+        
+        # Get thread pitches sorted (ascending order - coarse threads first)
+        tpis = sorted(threads.keys())
+        num_threads = len(tpis)
+        
+        # Process each thread pitch for this screw size
+        first_row_of_screw = current_row
+        for idx, tpi in enumerate(tpis):
+            thread_spec = threads[tpi]
+            
+            # Determine if we need to merge cells
+            is_first_thread = (idx == 0)
+            
+            # Write screw size and major diameter (only on first thread row)
+            if is_first_thread:
+                ws.cell(row=current_row, column=1).value = format_screw_size(screw_size)
+                ws.cell(row=current_row, column=2).value = format_decimal(major_diam)
+                
+                # Merge screw size and major diameter if multiple threads
+                if num_threads > 1:
+                    ws.merge_cells(f'A{first_row_of_screw}:A{first_row_of_screw + num_threads - 1}')
+                    ws.merge_cells(f'B{first_row_of_screw}:B{first_row_of_screw + num_threads - 1}')
+            
+            # Write TPI and minor diameter
+            ws.cell(row=current_row, column=3).value = str(tpi)
+            ws.cell(row=current_row, column=4).value = format_decimal(thread_spec['minor_diameter'])
+            
+            # Write tap drill sizes (75% thread)
+            tap_75 = thread_spec['tap_75']
+            ws.cell(row=current_row, column=5).value = format_drill_size(tap_75)
+            ws.cell(row=current_row, column=6).value = format_decimal(get_drill_decimal(tap_75))
+            
+            # Write tap drill sizes (50% thread)
+            tap_50 = thread_spec['tap_50']
+            ws.cell(row=current_row, column=7).value = format_drill_size(tap_50)
+            ws.cell(row=current_row, column=8).value = format_decimal(get_drill_decimal(tap_50))
+            
+            # Write clearance drill sizes (only on first thread row, then merge)
+            if is_first_thread:
+                close_fit = clearance['close_fit']
+                ws.cell(row=current_row, column=9).value = format_drill_size(close_fit)
+                ws.cell(row=current_row, column=10).value = format_decimal(get_drill_decimal(close_fit))
+                
+                free_fit = clearance['free_fit']
+                ws.cell(row=current_row, column=11).value = format_drill_size(free_fit)
+                ws.cell(row=current_row, column=12).value = format_decimal(get_drill_decimal(free_fit))
+                
+                # Merge clearance drill columns if multiple threads
+                if num_threads > 1:
+                    ws.merge_cells(f'I{first_row_of_screw}:I{first_row_of_screw + num_threads - 1}')
+                    ws.merge_cells(f'J{first_row_of_screw}:J{first_row_of_screw + num_threads - 1}')
+                    ws.merge_cells(f'K{first_row_of_screw}:K{first_row_of_screw + num_threads - 1}')
+                    ws.merge_cells(f'L{first_row_of_screw}:L{first_row_of_screw + num_threads - 1}')
+                
+                # Write SHCS data (only on first thread row, then merge)
+                if 'shcs' in screw_data:
+                    shcs = screw_data['shcs']
+                    ws.cell(row=current_row, column=13).value = format_drill_size(shcs['hex'])
+                    ws.cell(row=current_row, column=14).value = format_drill_size(shcs['counterbore_drill'])
+                    ws.cell(row=current_row, column=15).value = format_decimal(shcs['counterbore_dia'])
+                    ws.cell(row=current_row, column=16).value = format_decimal(shcs['counterbore_depth'])
+                    
+                    # Merge SHCS columns if multiple threads
+                    if num_threads > 1:
+                        ws.merge_cells(f'M{first_row_of_screw}:M{first_row_of_screw + num_threads - 1}')
+                        ws.merge_cells(f'N{first_row_of_screw}:N{first_row_of_screw + num_threads - 1}')
+                        ws.merge_cells(f'O{first_row_of_screw}:O{first_row_of_screw + num_threads - 1}')
+                        ws.merge_cells(f'P{first_row_of_screw}:P{first_row_of_screw + num_threads - 1}')
+                
+                # Write FHCS data (only on first thread row, then merge)
+                if 'fhcs' in screw_data:
+                    fhcs = screw_data['fhcs']
+                    ws.cell(row=current_row, column=17).value = format_drill_size(fhcs['hex'])
+                    ws.cell(row=current_row, column=18).value = format_decimal(fhcs['countersink_depth'])
+                
+                # Merge FHCS columns if multiple threads (always merge, even if no data)
+                if num_threads > 1:
+                    ws.merge_cells(f'Q{first_row_of_screw}:Q{first_row_of_screw + num_threads - 1}')
+                    ws.merge_cells(f'R{first_row_of_screw}:R{first_row_of_screw + num_threads - 1}')
+            
+            # Apply formatting to all cells in this row
+            for col in range(1, 19):
+                cell = ws.cell(row=current_row, column=col)
+                if not isinstance(cell, MergedCell):
+                    cell.alignment = center_align
+                    cell.border = thin_border
+                    # Apply alternating background color
+                    if alternate_color:
+                        cell.fill = alt_row_fill
+            
+            current_row += 1
+    
+    # Apply borders to all header cells
+    for row in range(1, 4):
+        for col in range(1, 19):
+            ws.cell(row=row, column=col).border = thin_border
+    
+    # Apply borders to all data cells (including merged cells in the last row)
+    last_data_row = current_row - 1
+    for row in range(4, last_data_row + 1):
+        for col in range(1, 19):
+            cell = ws.cell(row=row, column=col)
+            # Apply border even to merged cells to ensure bottom borders appear
+            cell.border = thin_border
+    
+    # Adjust column widths
+    ws.column_dimensions['A'].width = 10
+    ws.column_dimensions['B'].width = 10
+    ws.column_dimensions['C'].width = 10
+    ws.column_dimensions['D'].width = 10
+    for col in ['E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']:
+        ws.column_dimensions[col].width = 11
+    for col in ['M', 'N', 'O', 'P']:
+        ws.column_dimensions[col].width = 11
+        for col in ['Q', 'R']:
+            ws.column_dimensions[col].width = 11
+    
+        # Set row heights for better readability
+        ws.row_dimensions[1].height = 30
+        ws.row_dimensions[2].height = 40
+        ws.row_dimensions[3].height = 20
+    
+        # Freeze the first 3 rows (header rows)
+        ws.freeze_panes = 'A4'
+    
+        # Configure page setup for printing
+        ws.page_setup.paperSize = config['paper_size']
+        ws.page_setup.orientation = config['orientation']
+        ws.page_setup.fitToPage = True
+        ws.page_setup.fitToHeight = config['fit_height']
+        ws.page_setup.fitToWidth = config['fit_width']
+    
+        # Print options
+        ws.print_options.horizontalCentered = True
+        ws.print_options.verticalCentered = False
+        ws.print_options.gridLines = False
+    
+        # Page margins (in inches)
+        ws.page_margins.left = 0.5
+        ws.page_margins.right = 0.5
+        ws.page_margins.top = 0.5
+        ws.page_margins.bottom = 0.5
+        ws.page_margins.header = 0.0
+        ws.page_margins.footer = 0.0
 
-ws.merge_cells('D1:D3')  # Minor Diameter
-ws['D1'] = "Minor Diameter"
-ws['D1'].font = bold_font
-ws['D1'].alignment = center_align_wrap
 
-# Tap Drill section
-ws.merge_cells('E1:H1')  # Tap Drill header
-ws['E1'] = "Tap Drill"
-ws['E1'].font = bold_font
-ws['E1'].alignment = center_align_wrap
+# ============================================================================
+# CREATE WORKBOOK WITH MULTIPLE SHEETS
+# ============================================================================
 
-ws.merge_cells('E2:F2')  # 75% Thread subsection
-ws['E2'] = "75% Thread for Aluminum, Brass, Plastics"
-ws['E2'].font = bold_font
-ws['E2'].alignment = center_align_wrap
+# Create workbook
+wb = Workbook()
 
-ws.merge_cells('G2:H2')  # 50% Thread subsection
-ws['G2'] = "50% Thread for Stainless, Cast Iron & Iron"
-ws['G2'].font = bold_font
-ws['G2'].alignment = center_align_wrap
-
-# Clearance Drill section
-ws.merge_cells('I1:L1')  # Clearance Drill header
-ws['I1'] = "Clearance Drill"
-ws['I1'].font = bold_font
-ws['I1'].alignment = center_align_wrap
-
-ws.merge_cells('I2:J2')  # Close Fit subsection
-ws['I2'] = "Close Fit"
-ws['I2'].font = bold_font
-ws['I2'].alignment = center_align_wrap
-
-ws.merge_cells('K2:L2')  # Free Fit subsection
-ws['K2'] = "Free Fit"
-ws['K2'].font = bold_font
-ws['K2'].alignment = center_align_wrap
-
-# SHCS section
-ws.merge_cells('M1:P1')  # SHCS header
-ws['M1'] = "Socket Head Cap Screws"
-ws['M1'].font = bold_font
-ws['M1'].alignment = center_align_wrap
-
-ws.merge_cells('M2:M3')  # Hex subsection
-ws['M2'] = "Hex"
-ws['M2'].font = bold_font
-ws['M2'].alignment = center_align_wrap
-
-ws.merge_cells('N2:P2')  # Counterbore subsection
-ws['N2'] = "Counterbore"
-ws['N2'].font = bold_font
-ws['N2'].alignment = center_align_wrap
-
-# FHCS section
-ws.merge_cells('Q1:R1')  # FHCS header
-ws['Q1'] = "Flat Head Cap Screws"
-ws['Q1'].font = bold_font
-ws['Q1'].alignment = center_align_wrap
-
-ws.merge_cells('Q2:Q3')  # Hex subsection
-ws['Q2'] = "Hex"
-ws['Q2'].font = bold_font
-ws['Q2'].alignment = center_align_wrap
-
-ws.merge_cells('R2:R3')  # Countersink Depth subsection
-ws['R2'] = "Countersink Depth"
-ws['R2'].font = bold_font
-ws['R2'].alignment = center_align_wrap
-
-# Row 3: Column detail headers
-headers_row3 = [
-    "", "", "", "",  # A-D (already merged from rows 1-3)
-    "Drill Size", "Dec. Eq.",  # E-F (75% Thread)
-    "Drill Size", "Dec. Eq.",  # G-H (50% Thread)
-    "Drill Size", "Dec. Eq.",  # I-J (Close Fit)
-    "Drill Size", "Dec. Eq.",  # K-L (Free Fit)
-    "",  # M (Hex - merged from row 2-3)
-    "Drill Size", "Dec. Eq.", "Depth",  # N-P (Counterbore)
-    "", ""  # Q-R (FHCS Hex and Countersink Depth - merged from row 2-3)
+# Page configurations
+# Paper size: 1=Letter, 3=Tabloid (11"×17")
+configs = [
+    {
+        'name': 'Letter Landscape 1pg',
+        'paper_size': 1,  # Letter
+        'orientation': 'landscape',
+        'fit_height': 1,
+        'fit_width': 1
+    },
+    {
+        'name': 'Tabloid Landscape 1pg',
+        'paper_size': 3,  # Tabloid
+        'orientation': 'landscape',
+        'fit_height': 1,
+        'fit_width': 1
+    },
+    {
+        'name': 'Tabloid Landscape 2x2',
+        'paper_size': 3,  # Tabloid
+        'orientation': 'landscape',
+        'fit_height': 2,
+        'fit_width': 2
+    }
 ]
 
-for col, header in enumerate(headers_row3, start=1):
-    if header:  # Skip empty cells (A-D)
-        cell = ws.cell(row=3, column=col)
-        cell.value = header
-        cell.font = bold_font
-        cell.alignment = center_align_wrap
-
-# Generate data rows from structured data
-current_row = 4
-alternate_color = False  # Track alternating colors for screw sizes
-
-# Sort screw sizes by major diameter
-sorted_screws = sorted(THREAD_DATA.items(), key=lambda x: x[1]['major_diameter'])
-
-for screw_size, screw_data in sorted_screws:
-    major_diam = screw_data["major_diameter"]
-    threads = screw_data["threads"]
-    clearance = screw_data["clearance"]
+# Create sheets
+for idx, config in enumerate(configs):
+    if idx == 0:
+        # Use the default sheet for the first config
+        ws = wb.active
+        ws.title = config['name']
+    else:
+        # Create new sheets for additional configs
+        ws = wb.create_sheet(title=config['name'])
     
-    # Toggle alternating color for each new screw size
-    alternate_color = not alternate_color
-    
-    # Get thread pitches sorted (ascending order - coarse threads first)
-    tpis = sorted(threads.keys())
-    num_threads = len(tpis)
-    
-    # Process each thread pitch for this screw size
-    first_row_of_screw = current_row
-    for idx, tpi in enumerate(tpis):
-        thread_spec = threads[tpi]
-        
-        # Determine if we need to merge cells
-        is_first_thread = (idx == 0)
-        
-        # Write screw size and major diameter (only on first thread row)
-        if is_first_thread:
-            ws.cell(row=current_row, column=1).value = format_screw_size(screw_size)
-            ws.cell(row=current_row, column=2).value = format_decimal(major_diam)
-            
-            # Merge screw size and major diameter if multiple threads
-            if num_threads > 1:
-                ws.merge_cells(f'A{first_row_of_screw}:A{first_row_of_screw + num_threads - 1}')
-                ws.merge_cells(f'B{first_row_of_screw}:B{first_row_of_screw + num_threads - 1}')
-        
-        # Write TPI and minor diameter
-        ws.cell(row=current_row, column=3).value = str(tpi)
-        ws.cell(row=current_row, column=4).value = format_decimal(thread_spec['minor_diameter'])
-        
-        # Write tap drill sizes (75% thread)
-        tap_75 = thread_spec['tap_75']
-        ws.cell(row=current_row, column=5).value = format_drill_size(tap_75)
-        ws.cell(row=current_row, column=6).value = format_decimal(get_drill_decimal(tap_75))
-        
-        # Write tap drill sizes (50% thread)
-        tap_50 = thread_spec['tap_50']
-        ws.cell(row=current_row, column=7).value = format_drill_size(tap_50)
-        ws.cell(row=current_row, column=8).value = format_decimal(get_drill_decimal(tap_50))
-        
-        # Write clearance drill sizes (only on first thread row, then merge)
-        if is_first_thread:
-            close_fit = clearance['close_fit']
-            ws.cell(row=current_row, column=9).value = format_drill_size(close_fit)
-            ws.cell(row=current_row, column=10).value = format_decimal(get_drill_decimal(close_fit))
-            
-            free_fit = clearance['free_fit']
-            ws.cell(row=current_row, column=11).value = format_drill_size(free_fit)
-            ws.cell(row=current_row, column=12).value = format_decimal(get_drill_decimal(free_fit))
-            
-            # Merge clearance drill columns if multiple threads
-            if num_threads > 1:
-                ws.merge_cells(f'I{first_row_of_screw}:I{first_row_of_screw + num_threads - 1}')
-                ws.merge_cells(f'J{first_row_of_screw}:J{first_row_of_screw + num_threads - 1}')
-                ws.merge_cells(f'K{first_row_of_screw}:K{first_row_of_screw + num_threads - 1}')
-                ws.merge_cells(f'L{first_row_of_screw}:L{first_row_of_screw + num_threads - 1}')
-            
-            # Write SHCS data (only on first thread row, then merge)
-            if 'shcs' in screw_data:
-                shcs = screw_data['shcs']
-                ws.cell(row=current_row, column=13).value = format_drill_size(shcs['hex'])
-                ws.cell(row=current_row, column=14).value = format_drill_size(shcs['counterbore_drill'])
-                ws.cell(row=current_row, column=15).value = format_decimal(shcs['counterbore_dia'])
-                ws.cell(row=current_row, column=16).value = format_decimal(shcs['counterbore_depth'])
-                
-                # Merge SHCS columns if multiple threads
-                if num_threads > 1:
-                    ws.merge_cells(f'M{first_row_of_screw}:M{first_row_of_screw + num_threads - 1}')
-                    ws.merge_cells(f'N{first_row_of_screw}:N{first_row_of_screw + num_threads - 1}')
-                    ws.merge_cells(f'O{first_row_of_screw}:O{first_row_of_screw + num_threads - 1}')
-                    ws.merge_cells(f'P{first_row_of_screw}:P{first_row_of_screw + num_threads - 1}')
-            
-            # Write FHCS data (only on first thread row, then merge)
-            if 'fhcs' in screw_data:
-                fhcs = screw_data['fhcs']
-                ws.cell(row=current_row, column=17).value = format_drill_size(fhcs['hex'])
-                ws.cell(row=current_row, column=18).value = format_decimal(fhcs['countersink_depth'])
-            
-            # Merge FHCS columns if multiple threads (always merge, even if no data)
-            if num_threads > 1:
-                ws.merge_cells(f'Q{first_row_of_screw}:Q{first_row_of_screw + num_threads - 1}')
-                ws.merge_cells(f'R{first_row_of_screw}:R{first_row_of_screw + num_threads - 1}')
-        
-        # Apply formatting to all cells in this row
-        for col in range(1, 19):
-            cell = ws.cell(row=current_row, column=col)
-            if not isinstance(cell, MergedCell):
-                cell.alignment = center_align
-                cell.border = thin_border
-                # Apply alternating background color
-                if alternate_color:
-                    cell.fill = alt_row_fill
-        
-        current_row += 1
-
-# Apply borders to all header cells
-for row in range(1, 4):
-    for col in range(1, 19):
-        ws.cell(row=row, column=col).border = thin_border
-
-# Apply borders to all data cells (including merged cells in the last row)
-last_data_row = current_row - 1
-for row in range(4, last_data_row + 1):
-    for col in range(1, 19):
-        cell = ws.cell(row=row, column=col)
-        # Apply border even to merged cells to ensure bottom borders appear
-        cell.border = thin_border
-
-# Adjust column widths
-ws.column_dimensions['A'].width = 10
-ws.column_dimensions['B'].width = 10
-ws.column_dimensions['C'].width = 10
-ws.column_dimensions['D'].width = 10
-for col in ['E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']:
-    ws.column_dimensions[col].width = 11
-for col in ['M', 'N', 'O', 'P']:
-    ws.column_dimensions[col].width = 11
-for col in ['Q', 'R']:
-    ws.column_dimensions[col].width = 11
-
-# Set row heights for better readability
-ws.row_dimensions[1].height = 30
-ws.row_dimensions[2].height = 40
-ws.row_dimensions[3].height = 20
-
-# Freeze the first 3 rows (header rows)
-ws.freeze_panes = 'A4'
-
-# Configure page setup for printing
-# Page size: 1=Letter, 3=Tabloid (11"×17"), 5=Legal, 9=A4
-ws.page_setup.paperSize = 3  # Tabloid size (11×17)
-ws.page_setup.orientation = 'portrait'
-ws.page_setup.fitToPage = True
-ws.page_setup.fitToHeight = 1  # Fit to 1 page tall
-ws.page_setup.fitToWidth = 1   # Fit to 1 page wide
-
-# Print options
-ws.print_options.horizontalCentered = True
-ws.print_options.verticalCentered = False
-ws.print_options.gridLines = False
-
-# Page margins (in inches) - 0.5" all around
-ws.page_margins.left = 0.5
-ws.page_margins.right = 0.5
-ws.page_margins.top = 0.5
-ws.page_margins.bottom = 0.5
-ws.page_margins.header = 0.0  # No header
-ws.page_margins.footer = 0.0  # No footer
+    create_sheet(ws, config)
 
 # Save as Excel format (LibreOffice can open this)
 wb.save('inch_taps_drills.xlsx')
 print("Spreadsheet created: inch_taps_drills.xlsx")
+print(f"Created {len(configs)} sheets with different page layouts:")
+for config in configs:
+    print(f"  - {config['name']}")
 print("This file can be opened in LibreOffice Calc with all merged cells preserved.")
