@@ -951,6 +951,9 @@ ws.row_dimensions[1].height = 30
 ws.row_dimensions[2].height = 40
 ws.row_dimensions[3].height = 20
 
+# Freeze the first 3 rows (header rows)
+ws.freeze_panes = 'A4'
+
 # Configure page setup for printing
 # Page size: 1=Letter, 3=Tabloid (11"×17"), 5=Legal, 9=A4
 ws.page_setup.paperSize = 3  # Tabloid size (11×17)
