@@ -446,6 +446,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(3, 8),
             "counterbore_dia": 0.375,
             "counterbore_depth": 0.218
+        },
+        "fhcs": {
+            "hex": Fraction(1, 8),
+            "countersink_depth": 0.135
         }
     },
     "1/4": {
@@ -868,7 +872,7 @@ ws['K2'].alignment = center_align_wrap
 
 # SHCS section
 ws.merge_cells('M1:P1')  # SHCS header
-ws['M1'] = "SHCS (ANSI B18.3-2012)"
+ws['M1'] = "Socket Head Cap Screws"
 ws['M1'].font = bold_font
 ws['M1'].alignment = center_align_wrap
 
@@ -882,15 +886,32 @@ ws['N2'] = "Counterbore"
 ws['N2'].font = bold_font
 ws['N2'].alignment = center_align_wrap
 
+# FHCS section
+ws.merge_cells('Q1:R1')  # FHCS header
+ws['Q1'] = "Flat Head Cap Screws"
+ws['Q1'].font = bold_font
+ws['Q1'].alignment = center_align_wrap
+
+ws.merge_cells('Q2:Q3')  # Hex subsection
+ws['Q2'] = "Hex"
+ws['Q2'].font = bold_font
+ws['Q2'].alignment = center_align_wrap
+
+ws.merge_cells('R2:R3')  # Countersink Depth subsection
+ws['R2'] = "Countersink Depth"
+ws['R2'].font = bold_font
+ws['R2'].alignment = center_align_wrap
+
 # Row 3: Column detail headers
 headers_row3 = [
-    "", "", "", "",  # A-D (already merged from rows 1-2)
+    "", "", "", "",  # A-D (already merged from rows 1-3)
     "Drill Size", "Dec. Eq.",  # E-F (75% Thread)
     "Drill Size", "Dec. Eq.",  # G-H (50% Thread)
     "Drill Size", "Dec. Eq.",  # I-J (Close Fit)
     "Drill Size", "Dec. Eq.",  # K-L (Free Fit)
-    "",  # M (Hex - merged from row 2)
-    "Drill", "Dia.", "Depth"  # N-P (Counterbore)
+    "",  # M (Hex - merged from row 2-3)
+    "Drill Size", "Dec. Eq.", "Depth",  # N-P (Counterbore)
+    "", ""  # Q-R (FHCS Hex and Countersink Depth - merged from row 2-3)
 ]
 
 for col, header in enumerate(headers_row3, start=1):
@@ -982,9 +1003,20 @@ for screw_size, screw_data in sorted_screws:
                     ws.merge_cells(f'N{first_row_of_screw}:N{first_row_of_screw + num_threads - 1}')
                     ws.merge_cells(f'O{first_row_of_screw}:O{first_row_of_screw + num_threads - 1}')
                     ws.merge_cells(f'P{first_row_of_screw}:P{first_row_of_screw + num_threads - 1}')
+            
+            # Write FHCS data (only on first thread row, then merge)
+            if 'fhcs' in screw_data:
+                fhcs = screw_data['fhcs']
+                ws.cell(row=current_row, column=17).value = format_drill_size(fhcs['hex'])
+                ws.cell(row=current_row, column=18).value = format_decimal(fhcs['countersink_depth'])
+            
+            # Merge FHCS columns if multiple threads (always merge, even if no data)
+            if num_threads > 1:
+                ws.merge_cells(f'Q{first_row_of_screw}:Q{first_row_of_screw + num_threads - 1}')
+                ws.merge_cells(f'R{first_row_of_screw}:R{first_row_of_screw + num_threads - 1}')
         
         # Apply formatting to all cells in this row
-        for col in range(1, 17):
+        for col in range(1, 19):
             cell = ws.cell(row=current_row, column=col)
             if not isinstance(cell, MergedCell):
                 cell.alignment = center_align
@@ -997,13 +1029,13 @@ for screw_size, screw_data in sorted_screws:
 
 # Apply borders to all header cells
 for row in range(1, 4):
-    for col in range(1, 17):
+    for col in range(1, 19):
         ws.cell(row=row, column=col).border = thin_border
 
 # Apply borders to all data cells (including merged cells in the last row)
 last_data_row = current_row - 1
 for row in range(4, last_data_row + 1):
-    for col in range(1, 17):
+    for col in range(1, 19):
         cell = ws.cell(row=row, column=col)
         # Apply border even to merged cells to ensure bottom borders appear
         cell.border = thin_border
@@ -1016,6 +1048,8 @@ ws.column_dimensions['D'].width = 10
 for col in ['E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']:
     ws.column_dimensions[col].width = 11
 for col in ['M', 'N', 'O', 'P']:
+    ws.column_dimensions[col].width = 11
+for col in ['Q', 'R']:
     ws.column_dimensions[col].width = 11
 
 # Set row heights for better readability
