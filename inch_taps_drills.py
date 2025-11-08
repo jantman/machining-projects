@@ -796,6 +796,27 @@ ws.row_dimensions[1].height = 30
 ws.row_dimensions[2].height = 40
 ws.row_dimensions[3].height = 20
 
+# Configure page setup for printing
+# Page size: 1=Letter, 3=Tabloid (11"×17"), 5=Legal, 9=A4
+ws.page_setup.paperSize = 3  # Tabloid size (11×17)
+ws.page_setup.orientation = 'portrait'
+ws.page_setup.fitToPage = True
+ws.page_setup.fitToHeight = 1  # Fit to 1 page tall
+ws.page_setup.fitToWidth = 1   # Fit to 1 page wide
+
+# Print options
+ws.print_options.horizontalCentered = True
+ws.print_options.verticalCentered = False
+ws.print_options.gridLines = False
+
+# Page margins (in inches) - 0.5" all around
+ws.page_margins.left = 0.5
+ws.page_margins.right = 0.5
+ws.page_margins.top = 0.5
+ws.page_margins.bottom = 0.5
+ws.page_margins.header = 0.0  # No header
+ws.page_margins.footer = 0.0  # No footer
+
 # Save as Excel format (LibreOffice can open this)
 wb.save('inch_taps_drills.xlsx')
 print("Spreadsheet created: inch_taps_drills.xlsx")
