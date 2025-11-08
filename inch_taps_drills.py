@@ -694,13 +694,10 @@ for col, header in enumerate(headers_row3, start=1):
 current_row = 4
 alternate_color = False  # Track alternating colors for screw sizes
 
-# Iterate through screw sizes in a specific order
-screw_order = ["#0", "#1", "#2", "#3", "#4", "#5", "#6", "#8", "#10", "#12", 
-               "1/4", "5/16", "3/8", "7/16", "1/2", "9/16", "5/8", "11/16",
-               "3/4", "13/16", "7/8", "15/16", "1\""]
+# Sort screw sizes by major diameter
+sorted_screws = sorted(THREAD_DATA.items(), key=lambda x: x[1]['major_diameter'])
 
-for screw_size in screw_order:
-    screw_data = THREAD_DATA[screw_size]
+for screw_size, screw_data in sorted_screws:
     major_diam = screw_data["major_diameter"]
     threads = screw_data["threads"]
     clearance = screw_data["clearance"]
