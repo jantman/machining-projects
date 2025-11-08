@@ -742,22 +742,22 @@ thin_border = Border(
 
 # Create header rows
 # Row 1: Main headers with column spans
-ws.merge_cells('A1:A2')  # Screw Size
+ws.merge_cells('A1:A3')  # Screw Size
 ws['A1'] = "Screw Size"
 ws['A1'].font = bold_font
 ws['A1'].alignment = center_align_wrap
 
-ws.merge_cells('B1:B2')  # Major Diameter
+ws.merge_cells('B1:B3')  # Major Diameter
 ws['B1'] = "Major Diameter"
 ws['B1'].font = bold_font
 ws['B1'].alignment = center_align_wrap
 
-ws.merge_cells('C1:C2')  # Threads Per Inch
+ws.merge_cells('C1:C3')  # Threads Per Inch
 ws['C1'] = "TPI"
 ws['C1'].font = bold_font
 ws['C1'].alignment = center_align_wrap
 
-ws.merge_cells('D1:D2')  # Minor Diameter
+ws.merge_cells('D1:D3')  # Minor Diameter
 ws['D1'] = "Minor Diameter"
 ws['D1'].font = bold_font
 ws['D1'].alignment = center_align_wrap
