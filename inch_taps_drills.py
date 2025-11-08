@@ -609,7 +609,7 @@ ws.title = "Tap & Drill Sizes"
 # Define styles
 header_fill = PatternFill(start_color="D3D3D3", end_color="D3D3D3", fill_type="solid")
 subheader_fill = PatternFill(start_color="E8E8E8", end_color="E8E8E8", fill_type="solid")
-alt_row_fill = PatternFill(start_color="F5F5F5", end_color="F5F5F5", fill_type="solid")  # Light gray for alternating rows
+alt_row_fill = PatternFill(start_color="E2E2E2", end_color="E2E2E2", fill_type="solid")
 bold_font = Font(bold=True)
 center_align = Alignment(horizontal="center", vertical="center")
 center_align_wrap = Alignment(horizontal="center", vertical="center", wrap_text=True)
