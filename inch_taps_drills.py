@@ -1103,7 +1103,10 @@ def create_sheet(ws, config):
         ws.page_margins.top = 0.5
         ws.page_margins.bottom = 0.5
         ws.page_margins.header = 0.0
-        ws.page_margins.footer = 0.0
+        ws.page_margins.footer = 0.3
+        
+        # Add footer with GitHub URL (centered)
+        ws.oddFooter.center.text = "https://github.com/jantman/machining-projects"
 
 
 # ============================================================================
