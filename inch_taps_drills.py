@@ -1147,10 +1147,22 @@ configs = [
         'fit_height': 2,
         'fit_width': 2,
         'use_fit_to_page': True,
-        'column_width_multiplier': 1.0,
-        'row_height_multiplier': 1.0,
-        'header_font_size': 11,
-        'data_font_size': 11
+        'column_width_multiplier': 2.0,
+        'row_height_multiplier': 2.0,
+        'header_font_size': 22,
+        'data_font_size': 25
+    },
+    {
+        'name': 'Tabloid Landscape 3x3',
+        'paper_size': 3,  # Tabloid
+        'orientation': 'landscape',
+        'fit_height': 3,
+        'fit_width': 3,
+        'use_fit_to_page': True,
+        'column_width_multiplier': 2.5,
+        'row_height_multiplier': 2.5,
+        'header_font_size': 27,
+        'data_font_size': 31
     },
     {
         'name': '24x36 Landscape 1pg',
