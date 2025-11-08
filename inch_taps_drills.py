@@ -1092,7 +1092,7 @@ def create_sheet(ws, config):
 wb = Workbook()
 
 # Page configurations
-# Paper size: 1=Letter, 3=Tabloid (11"×17")
+# Paper size: 1=Letter, 3=Tabloid (11"×17"), 0=User-defined/Custom (for plotters)
 configs = [
     {
         'name': 'Letter Landscape 1pg',
@@ -1114,6 +1114,20 @@ configs = [
         'orientation': 'landscape',
         'fit_height': 2,
         'fit_width': 2
+    },
+    {
+        'name': '24x36 Landscape 1pg',
+        'paper_size': 0,  # Custom/User-defined (plotter)
+        'orientation': 'landscape',
+        'fit_height': 1,
+        'fit_width': 1
+    },
+    {
+        'name': '36x48 Landscape 1pg',
+        'paper_size': 0,  # Custom/User-defined (plotter)
+        'orientation': 'landscape',
+        'fit_height': 1,
+        'fit_width': 1
     }
 ]
 
