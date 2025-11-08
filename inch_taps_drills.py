@@ -1043,19 +1043,18 @@ def create_sheet(ws, config):
             # Apply border even to merged cells to ensure bottom borders appear
             cell.border = thin_border
     
-    # Adjust column widths
-    ws.column_dimensions['A'].width = 10
-    ws.column_dimensions['B'].width = 10
-    ws.column_dimensions['C'].width = 10
-    ws.column_dimensions['D'].width = 10
-    for col in ['E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']:
-        ws.column_dimensions[col].width = 11
-    for col in ['M', 'N', 'O', 'P']:
-        ws.column_dimensions[col].width = 11
+        # Adjust column widths
+        multiplier = config.get('column_width_multiplier', 1.0)
+        ws.column_dimensions['A'].width = 10 * multiplier
+        ws.column_dimensions['B'].width = 10 * multiplier
+        ws.column_dimensions['C'].width = 10 * multiplier
+        ws.column_dimensions['D'].width = 10 * multiplier
+        for col in ['E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']:
+            ws.column_dimensions[col].width = 11 * multiplier
+        for col in ['M', 'N', 'O', 'P']:
+            ws.column_dimensions[col].width = 11 * multiplier
         for col in ['Q', 'R']:
-            ws.column_dimensions[col].width = 11
-    
-        # Set row heights for better readability
+            ws.column_dimensions[col].width = 11 * multiplier        # Set row heights for better readability
         ws.row_dimensions[1].height = 30
         ws.row_dimensions[2].height = 40
         ws.row_dimensions[3].height = 20
@@ -1066,9 +1065,18 @@ def create_sheet(ws, config):
         # Configure page setup for printing
         ws.page_setup.paperSize = config['paper_size']
         ws.page_setup.orientation = config['orientation']
-        ws.page_setup.fitToPage = True
-        ws.page_setup.fitToHeight = config['fit_height']
-        ws.page_setup.fitToWidth = config['fit_width']
+        
+        # Set custom paper dimensions if provided (for plotter sizes)
+        if 'paper_width' in config and 'paper_height' in config:
+            ws.page_setup.paperWidth = f"{config['paper_width']}in"
+            ws.page_setup.paperHeight = f"{config['paper_height']}in"
+        
+        if config.get('use_fit_to_page', True):
+            ws.page_setup.fitToPage = True
+            ws.page_setup.fitToHeight = config['fit_height']
+            ws.page_setup.fitToWidth = config['fit_width']
+        else:
+            ws.page_setup.fitToPage = False
     
         # Print options
         ws.print_options.horizontalCentered = True
@@ -1099,35 +1107,49 @@ configs = [
         'paper_size': 1,  # Letter
         'orientation': 'landscape',
         'fit_height': 1,
-        'fit_width': 1
+        'fit_width': 1,
+        'use_fit_to_page': True,
+        'column_width_multiplier': 1.0
     },
     {
         'name': 'Tabloid Landscape 1pg',
         'paper_size': 3,  # Tabloid
         'orientation': 'landscape',
         'fit_height': 1,
-        'fit_width': 1
+        'fit_width': 1,
+        'use_fit_to_page': True,
+        'column_width_multiplier': 1.0
     },
     {
         'name': 'Tabloid Landscape 2x2',
         'paper_size': 3,  # Tabloid
         'orientation': 'landscape',
         'fit_height': 2,
-        'fit_width': 2
+        'fit_width': 2,
+        'use_fit_to_page': True,
+        'column_width_multiplier': 1.0
     },
     {
         'name': '24x36 Landscape 1pg',
         'paper_size': 0,  # Custom/User-defined (plotter)
-        'orientation': 'landscape',
-        'fit_height': 1,
-        'fit_width': 1
+        'orientation': 'portrait',  # Use portrait with dimensions swapped for landscape effect
+        'fit_height': 0,
+        'fit_width': 0,
+        'use_fit_to_page': False,
+        'column_width_multiplier': 2.5,  # Make columns wider for large format
+        'paper_width': 36,  # Width in inches (wider dimension)
+        'paper_height': 24  # Height in inches (shorter dimension)
     },
     {
         'name': '36x48 Landscape 1pg',
         'paper_size': 0,  # Custom/User-defined (plotter)
-        'orientation': 'landscape',
-        'fit_height': 1,
-        'fit_width': 1
+        'orientation': 'portrait',  # Use portrait with dimensions swapped for landscape effect
+        'fit_height': 0,
+        'fit_width': 0,
+        'use_fit_to_page': False,
+        'column_width_multiplier': 3.5,  # Make columns even wider for very large format
+        'paper_width': 48,  # Width in inches (wider dimension)
+        'paper_height': 36  # Height in inches (shorter dimension)
     }
 ]
 
