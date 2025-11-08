@@ -801,7 +801,6 @@ THREAD_DATA = {
 header_fill = PatternFill(start_color="D3D3D3", end_color="D3D3D3", fill_type="solid")
 subheader_fill = PatternFill(start_color="E8E8E8", end_color="E8E8E8", fill_type="solid")
 alt_row_fill = PatternFill(start_color="E2E2E2", end_color="E2E2E2", fill_type="solid")
-bold_font = Font(bold=True)
 center_align = Alignment(horizontal="center", vertical="center")
 center_align_wrap = Alignment(horizontal="center", vertical="center", wrap_text=True)
 thin_border = Border(
@@ -819,6 +818,11 @@ def create_sheet(ws, config):
         ws: Worksheet object to populate
         config: Dictionary with page configuration
     """
+    # Create fonts with sizes from config
+    header_font_size = config.get('header_font_size', 11)
+    data_font_size = config.get('data_font_size', 11)
+    bold_font = Font(bold=True, size=header_font_size)
+    data_font = Font(size=data_font_size)
     # Create header rows
     # Row 1: Main headers with column spans
     ws.merge_cells('A1:A3')  # Screw Size
@@ -1024,6 +1028,7 @@ def create_sheet(ws, config):
                 if not isinstance(cell, MergedCell):
                     cell.alignment = center_align
                     cell.border = thin_border
+                    cell.font = data_font
                     # Apply alternating background color
                     if alternate_color:
                         cell.fill = alt_row_fill
@@ -1042,6 +1047,12 @@ def create_sheet(ws, config):
             cell = ws.cell(row=row, column=col)
             # Apply border even to merged cells to ensure bottom borders appear
             cell.border = thin_border
+    
+    # Set row heights for data rows
+    row_multiplier = config.get('row_height_multiplier', 1.0)
+    default_data_row_height = 15  # Default row height for data
+    for row in range(4, last_data_row + 1):
+        ws.row_dimensions[row].height = default_data_row_height * row_multiplier
     
         # Adjust column widths
         multiplier = config.get('column_width_multiplier', 1.0)
@@ -1113,7 +1124,9 @@ configs = [
         'fit_width': 1,
         'use_fit_to_page': True,
         'column_width_multiplier': 1.0,
-        'row_height_multiplier': 1.0
+        'row_height_multiplier': 1.0,
+        'header_font_size': 11,  # Default font size for headers
+        'data_font_size': 11     # Default font size for data
     },
     {
         'name': 'Tabloid Landscape 1pg',
@@ -1123,7 +1136,9 @@ configs = [
         'fit_width': 1,
         'use_fit_to_page': True,
         'column_width_multiplier': 1.0,
-        'row_height_multiplier': 1.0
+        'row_height_multiplier': 1.0,
+        'header_font_size': 11,
+        'data_font_size': 11
     },
     {
         'name': 'Tabloid Landscape 2x2',
@@ -1133,7 +1148,9 @@ configs = [
         'fit_width': 2,
         'use_fit_to_page': True,
         'column_width_multiplier': 1.0,
-        'row_height_multiplier': 1.0
+        'row_height_multiplier': 1.0,
+        'header_font_size': 11,
+        'data_font_size': 11
     },
     {
         'name': '24x36 Landscape 1pg',
@@ -1142,10 +1159,12 @@ configs = [
         'fit_height': 0,
         'fit_width': 0,
         'use_fit_to_page': False,
-        'column_width_multiplier': 2.5,  # Make columns wider for large format
-        'row_height_multiplier': 2.5,  # Make rows taller for large format
+        'column_width_multiplier': 1.85,  # Make columns wider for large format
+        'row_height_multiplier': 1.85,  # Make rows taller for large format
         'paper_width': 36,  # Width in inches (wider dimension)
-        'paper_height': 24  # Height in inches (shorter dimension)
+        'paper_height': 24,  # Height in inches (shorter dimension)
+        'header_font_size': 20,  # Larger font for headers
+        'data_font_size': 26     # Larger font for data
     },
     {
         'name': '36x48 Landscape 1pg',
@@ -1154,10 +1173,12 @@ configs = [
         'fit_height': 0,
         'fit_width': 0,
         'use_fit_to_page': False,
-        'column_width_multiplier': 3.5,  # Make columns even wider for very large format
-        'row_height_multiplier': 3.5,  # Make rows taller for very large format
+        'column_width_multiplier': 2.8,  # Make columns even wider for very large format
+        'row_height_multiplier': 2.8,  # Make rows taller for very large format
         'paper_width': 48,  # Width in inches (wider dimension)
-        'paper_height': 36  # Height in inches (shorter dimension)
+        'paper_height': 36,  # Height in inches (shorter dimension)
+        'header_font_size': 30,  # Larger font for headers
+        'data_font_size': 36     # Larger font for data
     }
 ]
 
