@@ -207,6 +207,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(1, 8),
             "counterbore_dia": 0.125,
             "counterbore_depth": 0.074
+        },
+        "fhcs": {
+            "hex": "0.035",
+            "countersink_depth": 0.044
         }
     },
     "#1": {
@@ -229,6 +233,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(5, 32),
             "counterbore_dia": 0.15625,
             "counterbore_depth": 0.087
+        },
+        "fhcs": {
+            "hex": Fraction(1, 20),
+            "countersink_depth": 0.054
         }
     },
     "#2": {
@@ -251,6 +259,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(3, 16),
             "counterbore_dia": 0.1875,
             "counterbore_depth": 0.102
+        },
+        "fhcs": {
+            "hex": Fraction(1, 20),
+            "countersink_depth": 0.064
         }
     },
     "#3": {
@@ -273,6 +285,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(7, 32),
             "counterbore_dia": 0.21875,
             "counterbore_depth": 0.115
+        },
+        "fhcs": {
+            "hex": Fraction(1, 16),
+            "countersink_depth": 0.073
         }
     },
     "#4": {
@@ -295,6 +311,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(7, 32),
             "counterbore_dia": 0.21875,
             "counterbore_depth": 0.130
+        },
+        "fhcs": {
+            "hex": Fraction(1, 16),
+            "countersink_depth": 0.083
         }
     },
     "#5": {
@@ -317,6 +337,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(1, 4),
             "counterbore_dia": 0.250,
             "counterbore_depth": 0.145
+        },
+        "fhcs": {
+            "hex": Fraction(5, 64),
+            "countersink_depth": 0.090
         }
     },
     "#6": {
@@ -339,6 +363,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(9, 32),
             "counterbore_dia": 0.28125,
             "counterbore_depth": 0.158
+        },
+        "fhcs": {
+            "hex": Fraction(5, 64),
+            "countersink_depth": 0.097
         }
     },
     "#8": {
@@ -361,6 +389,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(5, 16),
             "counterbore_dia": 0.3125,
             "counterbore_depth": 0.188
+        },
+        "fhcs": {
+            "hex": Fraction(3, 32),
+            "countersink_depth": 0.112
         }
     },
     "#10": {
@@ -383,6 +415,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(3, 8),
             "counterbore_dia": 0.375,
             "counterbore_depth": 0.218
+        },
+        "fhcs": {
+            "hex": Fraction(1, 8),
+            "countersink_depth": 0.127
         }
     },
     "#12": {
@@ -437,6 +473,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(7, 16),
             "counterbore_dia": 0.4375,
             "counterbore_depth": 0.278
+        },
+        "fhcs": {
+            "hex": Fraction(5, 32),
+            "countersink_depth": 0.161
         }
     },
     "5/16": {
@@ -464,6 +504,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(17, 32),
             "counterbore_dia": 0.53125,
             "counterbore_depth": 0.346
+        },
+        "fhcs": {
+            "hex": Fraction(3, 16),
+            "countersink_depth": 0.198
         }
     },
     "3/8": {
@@ -491,6 +535,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(5, 8),
             "counterbore_dia": 0.625,
             "counterbore_depth": 0.415
+        },
+        "fhcs": {
+            "hex": Fraction(7, 32),
+            "countersink_depth": 0.234
         }
     },
     "7/16": {
@@ -518,6 +566,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(23, 32),
             "counterbore_dia": 0.71875,
             "counterbore_depth": 0.483
+        },
+        "fhcs": {
+            "hex": Fraction(1, 4),
+            "countersink_depth": 0.234
         }
     },
     "1/2": {
@@ -545,6 +597,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(13, 16),
             "counterbore_dia": 0.8125,
             "counterbore_depth": 0.552
+        },
+        "fhcs": {
+            "hex": Fraction(5, 16),
+            "countersink_depth": 0.251
         }
     },
     "9/16": {
@@ -599,6 +655,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(1, 1),
             "counterbore_dia": 1.0,
             "counterbore_depth": 0.689
+        },
+        "fhcs": {
+            "hex": Fraction(3, 8),
+            "countersink_depth": 0.324
         }
     },
     "11/16": {
@@ -637,6 +697,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(19, 16),
             "counterbore_dia": 1.1875,
             "counterbore_depth": 0.828
+        },
+        "fhcs": {
+            "hex": Fraction(1, 2),
+            "countersink_depth": 0.396
         }
     },
     "13/16": {
@@ -675,6 +739,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(11, 8),
             "counterbore_dia": 1.375,
             "counterbore_depth": 0.963
+        },
+        "fhcs": {
+            "hex": Fraction(9, 16),
+            "countersink_depth": 0.468
         }
     },
     "15/16": {
@@ -713,6 +781,10 @@ THREAD_DATA = {
             "counterbore_drill": Fraction(13, 8),
             "counterbore_dia": 1.625,
             "counterbore_depth": 1.100
+        },
+        "fhcs": {
+            "hex": Fraction(5, 8),
+            "countersink_depth": 0.540
         }
     },
 }
@@ -796,7 +868,7 @@ ws['K2'].alignment = center_align_wrap
 
 # SHCS section
 ws.merge_cells('M1:P1')  # SHCS header
-ws['M1'] = "SHCS"
+ws['M1'] = "SHCS (ANSI B18.3-2012)"
 ws['M1'].font = bold_font
 ws['M1'].alignment = center_align_wrap
 
