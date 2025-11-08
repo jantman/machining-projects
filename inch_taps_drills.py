@@ -1137,8 +1137,8 @@ configs = [
         'use_fit_to_page': True,
         'column_width_multiplier': 1.0,
         'row_height_multiplier': 1.0,
-        'header_font_size': 11,
-        'data_font_size': 11
+        'header_font_size': 12,
+        'data_font_size': 14
     },
     {
         'name': 'Tabloid Landscape 2x2',
