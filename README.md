@@ -2,7 +2,9 @@
 
 [![Project Status: Unsupported – The project has reached a stable, usable state but the author(s) have ceased all work on it. A new maintainer may be desired.](https://www.repostatus.org/badges/latest/unsupported.svg)](https://www.repostatus.org/#unsupported)
 
-Plans for some of my machining projects
+## Plans
+
+for some of my machining projects
 
 * [tailstock-die-holders/](tailstock-die-holders/) - Plans for some lathe tailstock die holders
 
@@ -18,3 +20,7 @@ Comprehensive tap drill, clearance drill, and counterbore/countersink charts for
 * [inch_taps_drills-36x48.pdf](inch_taps_drills-36x48.pdf) - Plotter size (36" × 48"), landscape orientation, single page
 
 Generated from [inch_taps_drills.py](inch_taps_drills.py).
+
+## Misc.
+
+* [Cincinnati No. 2 Tool & Cutter Grinder](Cincinnati_No2_Tool_Cutter_Grinder/) notes and documents
