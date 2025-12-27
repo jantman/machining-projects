@@ -24,3 +24,4 @@ Generated from [inch_taps_drills.py](inch_taps_drills.py).
 ## Misc.
 
 * [Cincinnati No. 2 Tool & Cutter Grinder](Cincinnati_No2_Tool_Cutter_Grinder/) notes and documents
+* Some notes on the [lathe tooling](lathe_tooling/) that I have
